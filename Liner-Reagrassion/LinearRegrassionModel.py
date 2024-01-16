@@ -6,7 +6,7 @@ class LinearRegrassion:
     def __init__(self, data, labels, polynomial_degree=0, sinusoid_degree=0, nomalize_data=True):
         '''在构造函数中调用数据预处理方法:
             data_processed     是预处理后的结果
-            features_mean      是main值
+            features_mean      
             features_deviation 是数据的标准差
         '''
         (data_processed, features_mean, features_deviation) = prepare_for_training(data, polynomial_degree=0, sinusoid_degree=0, normalize_data=True)
@@ -51,20 +51,17 @@ class LinearRegrassion:
         num_examples = data.shape[0]
         prediction = LinearRegrassion.hypothesis(self.data,self.theta)     # 得到预测值 （列向量）
         delta = prediction-self.labels                                     # 预测值 - 标签值 （列向量）
-        cost = (1/2)*np.dot(delta.T,delta)                # 差的平方累加/总个数
+        cost = (1/2)*np.dot(delta.T,delta)/num_examples                    # 差的平方累加/总个数
         return cost[0][0]                                                  # cost 是一个1×1的矩阵，所以返回 cost[0][0] 是一个数
-
-
-    '''
-    分界线：以上关于训练集，以下关于测试集
-    '''            
+       
 
     # 用测试集做测试
     def get_cost(self,data,labels):                                        
         data_processed = prepare_for_training(data, self.polynomial_degree, self.sinusoid_degree, self.nomalize_data)[0] # 测试集数据预处理
         return self.cost_function(data_processed,labels)
     
-    # 预测值
+    # 用训练好的模型算出预测值
     def predict(self,data):
         data_processed = prepare_for_training(data, self.polynomial_degree, self.sinusoid_degree, self.nomalize_data)[0] # 测试集数据预处理
-        predictions = self.hypothesis(data_processed,self.theta)                                                                  # 
+        predictions = self.hypothesis(data_processed,self.theta)
+        return predictions                                                              
